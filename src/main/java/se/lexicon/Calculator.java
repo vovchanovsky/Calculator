@@ -1,21 +1,24 @@
 package se.lexicon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.lang.Character.isDigit;
 
 public class Calculator{
 
 
-    public static void main(String[] args) {
+ static void main() {
 
         IO.println("Welcome to the Calculator!");
 
         while (true) {
             String equation = enterEquation();
             if (validEquation(equation)) {
-                // calculate(equation);
+                IO.println(tokenize(equation));
             }
             IO.println("Perform another calculation? (yes/no):");
             Scanner scanner = new Scanner(System.in);
@@ -47,9 +50,12 @@ public class Calculator{
 
     public static List<String> tokenize(String equation){
         equation = equation.replaceAll(" ", "").replaceAll(",", ".");
-        for (char c : equation.toCharArray()) {
-
+        List<String> tokens = new ArrayList<>();
+        Matcher m = Pattern.compile("([+\\-*/]|\\d*\\.?\\d+)").matcher(equation);
+        while (m.find()) {
+            tokens.add(m.group());
         }
+        return tokens;
 
     }
 
